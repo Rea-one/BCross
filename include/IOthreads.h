@@ -1,7 +1,10 @@
-#include <pqxx/pqxx> // PostgreSQL C++ 库
+#pragma once
 #include <queue>
 #include <mutex>
+#include <iostream>
 #include <condition_variable>
+
+#include <pqxx/pqxx> // PostgreSQL C++ 库
 #include <boost/property_tree/ptree.hpp> // 使用现有配置读取
 
 struct message

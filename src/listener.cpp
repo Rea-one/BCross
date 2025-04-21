@@ -3,14 +3,18 @@
 Listener::Listener(const std::string &config_file) : m_config(config_file) {}
 
 
-Listener::run()
-{
+// listener.cpp 的 run() 函数修改
+void Listener::run() {
     init_server();
-    while (true)
-    {
+    while (true) {
         m_acceptor.accept(m_socket);
         start_accept();
-        ConnectionPool::get_connection()->close();
+        auto conn = ConnectionPool::getConnection();
+        if (conn) {
+            conn->close();
+        } else {
+            std::cerr << "获取数据库连接失败" << std::endl;
+        }
     }
 }
 

@@ -5,6 +5,8 @@ project(BCross LANGUAGES CXX)
 include(${CMAKE_CURRENT_SOURCE_DIR}/config.cmake)
 
 # 使用变量（删除硬编码）
+set(BOOST_INCLUDE_DIR "${BOOST_ROOT}/include/boost-1_88")
+set(BOOST_LIBRARY "${BOOST_ROOT}/lib/libboost_system-mgw14-mt-x64-1_88.a")
 set(POSTGRESQL_INCLUDE_DIR "${POSTGRESQL_ROOT}/include")
 set(POSTGRESQL_LIBRARY "${POSTGRESQL_ROOT}/lib/libpq.lib")
 set(LIBPQXX_INCLUDE_DIR "${LIBPQXX_ROOT}/include")
@@ -16,7 +18,6 @@ add_executable(BCross
     src/main.cpp          # 主程序入口
     src/BCross.cpp
     src/config_reader.cpp
-    src/connection_pool.cpp
     src/listener.cpp
     src/IOthreads.cpp
     src/worker.cpp
@@ -28,10 +29,12 @@ target_include_directories(BCross PUBLIC
     ${POSTGRESQL_INCLUDE_DIR}
     ${LIBPQXX_INCLUDE_DIR}
     ${LIBPQXX_BUILD_INCLUDE_DIR}
+    ${BOOST_INCLUDE_DIR}
 )
 
 # 链接库
 target_link_libraries(BCross
     ${POSTGRESQL_LIBRARY}
     ${LIBPQXX_LIBRARY}
+    ${BOOST_LIBRARY}
 )

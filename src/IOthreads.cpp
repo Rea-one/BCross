@@ -59,19 +59,25 @@ void ConnectionPool::releaseConnection(pqxx::connection *conn)
     m_cond.notify_one(); // 通知可用连接
 }
 
-bool ConnectionPOol::sendMessage(const message &msg)
+// IOthreads.cpp 的 sendMessage 修改
+bool ConnectionPool::sendMessage(const message &msg)
 {
     pqxx::connection *conn = getConnection();
     if (!conn)
-    {
         return false;
-    }
     try
     {
         pqxx::work txn(*conn);
-        std::string query = "INSERT INTO messages (content, friend_id, id, timestamp) VALUES (" +
-                            pqxx::to_string(msg.content) +", " + std::to_string(msg.friend_id) + ", " +
-                            std::to_string(msg.id) + ", " + std::to_string(msg.timestamp.time_since_epoch().count()) + ");";
+        // 参数化查询
+        txn.exec(
+            "INSERT INTO messages (content, friend_id, id, timestamp) "
+            "VALUES ($1, $2, $3, $4)",
+            pqxx::to_string(msg.content),
+            msg.friend_id,
+            msg.id,
+            msg.timestamp.time_since_epoch().count());
+        txn.commit();
+        return true;
     }
     catch (const std::exception &e)
     {
