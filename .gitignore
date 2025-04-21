@@ -1,5 +1,4 @@
 build
 .vscode
 config/config.json
-config/exmple_generator.py
 config.cmake
