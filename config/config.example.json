@@ -1,0 +1,26 @@
+{
+  "path": [
+    {
+      "name": "libpqXX",
+      "path": ""
+    },
+    {
+      "name": "postgresql",
+      "path": ""
+    },
+    {
+      "name": "boost",
+      "path": ""
+    }
+  ],
+  "nets": [
+    {
+      "name": "postgresql",
+      "ip": "127.0.0.1",
+      "port": "5432",
+      "user": "postgres",
+      "password": "123456",
+      "dbname": "postgres"
+    }
+  ]
+}
